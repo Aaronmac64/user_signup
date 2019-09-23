@@ -59,6 +59,12 @@ def resultform():
         else:
             pushToResult = False
             error = "Email did not contain any periods"
+        if len(email) < 3:
+            pushToResult = False
+            error = "Email is too short"
+        if len(email) > 20:
+            pushToResult = False
+            error = "Email is too long"
 
 
     if verify_password != password:
