@@ -17,7 +17,12 @@ def resultform():
     password = request.form['password']
     verify_password = request.form['verify_password']
     email = request.form['email']
+    pushToResult = False
 
-    return render_template('result_form.html',username=username)
+    if pushToResult:
+        return render_template('result_form.html',username=username)
+    else:
+        error = "There was an error"
+        return redirect("/?error=" + error)
 
 app.run()
