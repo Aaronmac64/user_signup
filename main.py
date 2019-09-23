@@ -17,12 +17,57 @@ def resultform():
     password = request.form['password']
     verify_password = request.form['verify_password']
     email = request.form['email']
-    pushToResult = False
+    error = "There was an error"
+
+    pushToResult = True
+
+    if username == "":
+        pushToResult = False
+        error = "Username field was empty!"
+
+    if password == "":
+        pushToResult = False
+        error = "Password field was empty!"
+
+    if verify_password == "":
+        pushToResult = False
+        error = "Verify Password field was empty!"
+
+    if " " in password:
+        pushToResult = False
+        error = "Password had unsupported characters"
+
+    if len(password) < 3:
+        pushToResult = False
+        error = "Password is too short"
+
+    if len(password) > 20:
+        pushToResult = False
+        error = "Password is too long"
+
+    if email != "":
+        if any(["@" in email]):
+            error = ""
+        else:
+            pushToResult = False
+            error = "Email did not contain @ sign"
+        if any([" " in email]):
+            pushToResult = False
+            error = "Email cannot contain any spaces"
+        if any(["." in email]):
+            error = ""
+        else:
+            pushToResult = False
+            error = "Email did not contain any periods"
+
+
+    if verify_password != password:
+        pushToResult = False
+        error = "Verify Password did not match Password!"
 
     if pushToResult:
         return render_template('result_form.html',username=username)
     else:
-        error = "There was an error"
         return redirect("/?error=" + error)
 
 app.run()
