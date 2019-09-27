@@ -1,14 +1,29 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
 import cgi
 
 app = Flask(__name__)
 
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
 
+usernameError = ""
+passwordError = ""
+passwordVerifyError = ""
+emailError = ""
+
 @app.route("/")
 def index():
 
-    return render_template('submission_form.html',)
+    usernameError = request.args.get("usernameError")
+    if usernameError == "None":
+        usernameError = ""
+
+    passwordError = request.args.get("passwordError")
+
+    passwordVerifyError = request.args.get("passwordVerifyError")
+
+    emailError = request.args.get("emailError")
+
+    return render_template('submission_form.html', usernameError=usernameError, passwordError=passwordError, passwordVerifyError=passwordVerifyError, emailError=emailError)
 
 @app.route("/result", methods=['POST'])
 def resultform():
@@ -24,26 +39,32 @@ def resultform():
     if username == "":
         pushToResult = False
         error = "Username field was empty!"
+        return redirect("/?usernameError=" + error)
 
     if password == "":
         pushToResult = False
         error = "Password field was empty!"
+        return redirect("/?passwordError=" + error)
 
     if verify_password == "":
         pushToResult = False
         error = "Verify Password field was empty!"
+        return redirect("/?passwordVerifyError=" + error)
 
     if " " in password:
         pushToResult = False
         error = "Password had unsupported characters"
+        return redirect("/?passwordError=" + error)
 
     if len(password) < 3:
         pushToResult = False
         error = "Password is too short"
+        return redirect("/?passwordError=" + error)
 
     if len(password) > 20:
         pushToResult = False
         error = "Password is too long"
+        return redirect("/?passwordError=" + error)
 
     if email != "":
         if any(["@" in email]):
@@ -51,29 +72,35 @@ def resultform():
         else:
             pushToResult = False
             error = "Email did not contain @ sign"
+            return redirect("/?emailError=" + error)
         if any([" " in email]):
             pushToResult = False
             error = "Email cannot contain any spaces"
+            return redirect("/?emailError=" + error)
         if any(["." in email]):
             error = ""
         else:
             pushToResult = False
             error = "Email did not contain any periods"
+            return redirect("/?emailError=" + error)
         if len(email) < 3:
             pushToResult = False
             error = "Email is too short"
+            return redirect("/?emailError=" + error)
         if len(email) > 20:
             pushToResult = False
             error = "Email is too long"
+            return redirect("/?emailError=" + error)
 
 
     if verify_password != password:
         pushToResult = False
         error = "Verify Password did not match Password!"
+        return redirect("/?passwordError=" + error)
 
     if pushToResult:
-        return render_template('result_form.html',username=username)
-    else:
-        return redirect("/?error=" + error)
+        return render_template('result_form.html', username=username) 
+    #else:
+    #    return redirect("/?error=" + error)
 
 app.run()

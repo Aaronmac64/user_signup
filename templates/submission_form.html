@@ -17,22 +17,22 @@
             <label>
                 Username:
                 <input type="text" name="username"/>
-            </label><br>
+            </label> {{ usernameError }} <br>
 
             <label>
                 Password:
                 <input type="password" name="password"/>
-            </label><br>
+            </label> {{ passwordError }} <br>
 
             <label>
                 Verify Password:
                 <input type="password" name="verify_password"/>
-            </label><br>
+            </label> {{ passwordVerifyError }} <br>
 
             <label>
                 Email (optional):
                 <input type="text" name="email"/>
-            </label><br>
+            </label> {{ emailError }}<br>
 
             <input type="submit" value="Submit Query"/>
 
