@@ -16,7 +16,7 @@
         <form action="/result" method="post">
             <label>
                 Username:
-                <input type="text" name="username"/>
+                <input type="text" name="username" value=" {{ usernameField }} "/>
             </label> {{ usernameError }} <br>
 
             <label>
@@ -31,7 +31,7 @@
 
             <label>
                 Email (optional):
-                <input type="text" name="email"/>
+                <input type="text" name="email" value=" {{ emailField }} "/>
             </label> {{ emailError }}<br>
 
             <input type="submit" value="Submit Query"/>

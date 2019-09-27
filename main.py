@@ -13,19 +13,41 @@ emailError = ""
 @app.route("/")
 def index():
 
+    usernameError = " "
+    passwordError = " "
+    passwordVerifyError = " "
+    emailError = " "
+
+    usernameField = ""
+    emailField = ""
+
+    usernameField = request.form.get('username')
+    #if not usernameField:
+    #    usernameField = ""
+
+    emailField = request.form.get('email')    
+    #if not emailField:
+    #    emailField = ""
+
     usernameError = request.args.get("usernameError")
-    if usernameError == "None":
-        usernameError = ""
+    if not usernameError:
+        usernameError = " "
 
     passwordError = request.args.get("passwordError")
+    if not passwordError:
+        passwordError = " "
 
     passwordVerifyError = request.args.get("passwordVerifyError")
+    if not passwordVerifyError:
+        passwordVerifyError = " "
 
     emailError = request.args.get("emailError")
+    if not emailError:
+        emailError = " "
 
-    return render_template('submission_form.html', usernameError=usernameError, passwordError=passwordError, passwordVerifyError=passwordVerifyError, emailError=emailError)
+    return render_template('submission_form.html', usernameError=usernameError, passwordError=passwordError, passwordVerifyError=passwordVerifyError, emailError=emailError, emailField=emailField, usernameField=usernameField)
 
-@app.route("/result", methods=['POST'])
+@app.route("/result", methods=['POST', 'GET'])
 def resultform():
 
     username = request.form['username']
